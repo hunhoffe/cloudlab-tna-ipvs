@@ -21,7 +21,7 @@ request = pc.makeRequestRSpec()
 
 # Add a raw PC to the request and give it an interface.
 src = request.RawPC("src")
-#src.hardware_type = "d710"
+src.hardware_type = "d430"
 src.disk_image = 'urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD'
 src_iface0 = src.addInterface()
 src_iface0.addAddress(pg.IPv4Address("10.1.1.1", "255.255.255.0"))
