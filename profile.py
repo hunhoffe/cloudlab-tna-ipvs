@@ -6,6 +6,7 @@ Use ipvs on lb, then curl from src."""
 BLOCKSTORE_SIZE=100
 TNA_IMAGE="urn:publicid:IDN+emulab.net+image+CUDevOpsFall2018:tna-ipvs"
 BASE_IMAGE="urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD"
+BANDWIDTH=1000000
 
 ## COPIED FROM small-lan
 
@@ -76,14 +77,13 @@ sink2_iface0.addAddress(pg.IPv4Address("192.168.1.3", "255.255.255.0"))
 link1 = request.Link("link-src-lb")
 link1.addInterface(src_iface0)
 link1.addInterface(lb_iface0)
-#link1.bandwidth = 1000000
-
+link1.bandwidth = BANDWIDTH
 
 link = request.LAN("lb-sinks")
 link.addInterface(lb_iface1)
 link.addInterface(sink1_iface0)
 link.addInterface(sink2_iface0)
-
+link.bandwidth = BANDWIDTH
 
 
 # Specify duplex parameters for each of the nodes in the link (or lan).
