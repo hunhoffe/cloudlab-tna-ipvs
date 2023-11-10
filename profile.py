@@ -42,7 +42,7 @@ src_iface0.addAddress(pg.IPv4Address("10.1.1.1", "255.255.255.0"))
 
 # Add a raw PC to the request and give it an interface.
 lb = request.RawPC("lb")
-lb.disk_image = 'urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD'
+lb.disk_image = TNA_IMAGE
 lb.hardware_type = params.nodeType
 lb_iface0 = lb.addInterface()
 lb_iface0.addAddress(pg.IPv4Address("10.1.1.2", "255.255.255.0"))
