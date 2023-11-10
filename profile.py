@@ -6,7 +6,9 @@ Use ipvs on lb, then curl from src."""
 BLOCKSTORE_SIZE=100
 TNA_IMAGE="urn:publicid:IDN+emulab.net+image+CUDevOpsFall2018:tna-ipvs"
 BASE_IMAGE="urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD"
-BANDWIDTH=1000000
+# (10000000,"10Gb/s"),(25000000,"25Gb/s"),(100000000,"100Gb/s")
+BANDWIDTH=25000000
+
 
 ## COPIED FROM small-lan
 
@@ -20,7 +22,7 @@ pc = portal.Context()
 pc.defineParameter("nodeType", 
                    "Node Hardware Type",
                    portal.ParameterType.NODETYPE, 
-                   "d430",
+                   "r6525",
                    longDescription="A specific hardware type to use for all nodes. This profile has been tested with d430 nodes")
 params = pc.bindParameters()
 
@@ -74,15 +76,12 @@ sink2_iface0.addAddress(pg.IPv4Address("192.168.1.3", "255.255.255.0"))
 #bs.placement = "any"
 
 # Add a link to the request and then add the interfaces to the link
-link1 = request.Link("link-src-lb")
-link1.addInterface(src_iface0)
-link1.addInterface(lb_iface0)
-link1.bandwidth = BANDWIDTH
-
-link = request.LAN("lb-sinks")
+link = request.LAN()
 link.addInterface(lb_iface1)
 link.addInterface(sink1_iface0)
 link.addInterface(sink2_iface0)
+link.addInterface(src_iface0)
+link.addInterface(lb_iface0)
 link.bandwidth = BANDWIDTH
 
 
