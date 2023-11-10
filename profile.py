@@ -49,8 +49,6 @@ lb.disk_image = TNA_IMAGE
 lb.hardware_type = params.nodeType
 lb_iface0 = lb.addInterface()
 lb_iface0.addAddress(pg.IPv4Address("10.1.1.2", "255.255.255.0"))
-lb_iface1 = lb.addInterface()
-lb_iface1.addAddress(pg.IPv4Address("192.168.1.1", "255.255.255.0"))
 bs = lb.Blockstore("lb" + "-bs", "/mydata")
 bs.size = str(BLOCKSTORE_SIZE) + "GB"
 bs.placement = "any"
@@ -60,7 +58,7 @@ sink1 = request.RawPC("sink1")
 sink1.disk_image = BASE_IMAGE
 sink1.hardware_type = params.nodeType
 sink1_iface0 = sink1.addInterface()
-sink1_iface0.addAddress(pg.IPv4Address("192.168.1.2", "255.255.255.0"))
+sink1_iface0.addAddress(pg.IPv4Address("10.1.1.3", "255.255.255.0"))
 #bs = sink1.Blockstore("sink1" + "-bs", "/mydata")
 #bs.size = str(BLOCKSTORE_SIZE) + "GB"
 #bs.placement = "any"
@@ -70,14 +68,13 @@ sink2 = request.RawPC("sink2")
 sink2.disk_image = BASE_IMAGE
 sink2.hardware_type = params.nodeType
 sink2_iface0 = sink2.addInterface()
-sink2_iface0.addAddress(pg.IPv4Address("192.168.1.3", "255.255.255.0"))
+sink2_iface0.addAddress(pg.IPv4Address("10.1.1.4", "255.255.255.0"))
 #bs = sink2.Blockstore("sink2" + "-bs", "/mydata")
 #bs.size = str(BLOCKSTORE_SIZE) + "GB"
 #bs.placement = "any"
 
 # Add a link to the request and then add the interfaces to the link
 link = request.LAN()
-link.addInterface(lb_iface1)
 link.addInterface(sink1_iface0)
 link.addInterface(sink2_iface0)
 link.addInterface(src_iface0)
