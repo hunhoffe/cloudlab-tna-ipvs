@@ -3,8 +3,10 @@
 Instructions:
 Use ipvs on lb, then curl from src."""
 
-BLOCKSTORE_SIZE=30
+BLOCKSTORE_SIZE=100
 HARDWARE_TYPE="d430"
+TNA_IMAGE="urn:publicid:IDN+emulab.net+image+CUDevOpsFall2018:tna-ipvs"
+BASE_IMAGE="urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD"
 
 ## COPIED FROM small-lan
 
@@ -23,13 +25,13 @@ request = pc.makeRequestRSpec()
 # Add a raw PC to the request and give it an interface.
 src = request.RawPC("src")
 src.hardware_type = HARDWARE_TYPE
-src.disk_image = 'urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD'
+src.disk_image = BASE_IMAGE
 src_iface0 = src.addInterface()
 src_iface0.addAddress(pg.IPv4Address("10.1.1.1", "255.255.255.0"))
 # Add extra storage space
-bs = src.Blockstore("src" + "-bs", "/mydata")
-bs.size = str(BLOCKSTORE_SIZE) + "GB"
-bs.placement = "any"
+#bs = src.Blockstore("src" + "-bs", "/mydata")
+#bs.size = str(BLOCKSTORE_SIZE) + "GB"
+#bs.placement = "any"
 
 
 
@@ -47,23 +49,23 @@ bs.placement = "any"
 
 # Add another raw PC to the request and give it an interface.
 sink1 = request.RawPC("sink1")
-sink1.disk_image = 'urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD'
+sink1.disk_image = BASE_IMAGE
 sink1.hardware_type = HARDWARE_TYPE
 sink1_iface0 = sink1.addInterface()
 sink1_iface0.addAddress(pg.IPv4Address("192.168.1.2", "255.255.255.0"))
-bs = sink1.Blockstore("sink1" + "-bs", "/mydata")
-bs.size = str(BLOCKSTORE_SIZE) + "GB"
-bs.placement = "any"
+#bs = sink1.Blockstore("sink1" + "-bs", "/mydata")
+#bs.size = str(BLOCKSTORE_SIZE) + "GB"
+#bs.placement = "any"
 
 # Add another raw PC to the request and give it an interface.
 sink2 = request.RawPC("sink2")
-sink2.disk_image = 'urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD'
+sink2.disk_image = BASE_IMAGE
 sink2.hardware_type = HARDWARE_TYPE
 sink2_iface0 = sink2.addInterface()
 sink2_iface0.addAddress(pg.IPv4Address("192.168.1.3", "255.255.255.0"))
-bs = sink2.Blockstore("sink2" + "-bs", "/mydata")
-bs.size = str(BLOCKSTORE_SIZE) + "GB"
-bs.placement = "any"
+#bs = sink2.Blockstore("sink2" + "-bs", "/mydata")
+#bs.size = str(BLOCKSTORE_SIZE) + "GB"
+#bs.placement = "any"
 
 # Add a link to the request and then add the interfaces to the link
 link1 = request.Link("link-src-lb")
