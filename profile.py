@@ -89,14 +89,14 @@ sink2_iface0.addAddress(pg.IPv4Address("192.168.1.3", "255.255.255.0"))
 link1 = request.Link("link-src-lb")
 link1.addInterface(src_iface0)
 link1.addInterface(lb_iface0)
-link.bandwidth = params.linkSpeed
+link1.bandwidth = params.linkSpeed
 
 
-link = request.LAN("lb-sinks")
-link.addInterface(lb_iface1)
-link.addInterface(sink1_iface0)
-link.addInterface(sink2_iface0)
-link.bandwidth = params.linkSpeed
+link2 = request.LAN("lb-sinks")
+link2.addInterface(lb_iface1)
+link2.addInterface(sink1_iface0)
+link2.addInterface(sink2_iface0)
+link2.bandwidth = params.linkSpeed
 
 # Print the RSpec to the enclosing page.
 pc.printRequestRSpec(request)
