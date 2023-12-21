@@ -27,7 +27,7 @@ pc.defineParameter("linkSpeed",
                    "Link Speed",
                    portal.ParameterType.INTEGER,
                    0,
-                   [(0,"Any"),(100000,"100Mb/s"),(1000000,"1Gb/s"),(10000000,"10Gb/s"),(25000000,"25Gb/s"),(100000000,"100Gb/s")],
+                   [(0,"Any"),(25000000,"25Gb/s")], #[(0,"Any"),(100000,"100Mb/s"),(1000000,"1Gb/s"),(10000000,"10Gb/s"),(25000000,"25Gb/s"),(100000000,"100Gb/s")],
                    longDescription="A specific link speed to use for your lan. Make sure you choose a node type that supports it, or let the resource mapper find one.")
 params = pc.bindParameters()
 
@@ -57,6 +57,8 @@ if params.nodeType != "":
   lb.hardware_type = params.nodeType
 lb_iface0 = lb.addInterface()
 lb_iface0.addAddress(pg.IPv4Address("10.1.1.2", "255.255.255.0"))
+lb_iface1 = lb.addInterface()
+lb_iface1.addAddress(pg.IPv4Address("192.168.1.1", "255.255.255.0"))
 bs = lb.Blockstore("lb" + "-bs", "/mydata")
 bs.size = str(BLOCKSTORE_SIZE) + "GB"
 bs.placement = "any"
@@ -67,7 +69,7 @@ sink1.disk_image = BASE_IMAGE
 if params.nodeType != "":
   sink1.hardware_type = params.nodeType
 sink1_iface0 = sink1.addInterface()
-sink1_iface0.addAddress(pg.IPv4Address("10.1.1.3", "255.255.255.0"))
+sink1_iface0.addAddress(pg.IPv4Address("192.168.1.2", "255.255.255.0"))
 #bs = sink1.Blockstore("sink1" + "-bs", "/mydata")
 #bs.size = str(BLOCKSTORE_SIZE) + "GB"
 #bs.placement = "any"
@@ -78,17 +80,22 @@ sink2.disk_image = BASE_IMAGE
 if params.nodeType != "":
   sink2.hardware_type = params.nodeType
 sink2_iface0 = sink2.addInterface()
-sink2_iface0.addAddress(pg.IPv4Address("10.1.1.4", "255.255.255.0"))
+sink2_iface0.addAddress(pg.IPv4Address("192.168.1.3", "255.255.255.0"))
 #bs = sink2.Blockstore("sink2" + "-bs", "/mydata")
 #bs.size = str(BLOCKSTORE_SIZE) + "GB"
 #bs.placement = "any"
 
 # Add a link to the request and then add the interfaces to the link
-link = request.LAN()
+link1 = request.Link("link-src-lb")
+link1.addInterface(src_iface0)
+link1.addInterface(lb_iface0)
+link.bandwidth = params.linkSpeed
+
+
+link = request.LAN("lb-sinks")
+link.addInterface(lb_iface1)
 link.addInterface(sink1_iface0)
 link.addInterface(sink2_iface0)
-link.addInterface(src_iface0)
-link.addInterface(lb_iface0)
 link.bandwidth = params.linkSpeed
 
 # Print the RSpec to the enclosing page.
