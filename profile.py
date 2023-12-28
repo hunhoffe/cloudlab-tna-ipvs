@@ -4,7 +4,7 @@ Instructions:
 Use ipvs on lb, then curl from src."""
 
 BLOCKSTORE_SIZE=100
-TNA_IMAGE="urn:publicid:IDN+emulab.net+image+CUDevOpsFall2018:tna-ipvs"
+TNA_IMAGE="urn:publicid:IDN+emulab.net+image+CUDevOpsFall2018:tna-ipvs:0"
 BASE_IMAGE="urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU20-64-STD"
 
 
